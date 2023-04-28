@@ -316,7 +316,7 @@ HashTable<K,V,Prober,Hash,KEqual>::HashTable(
 template<typename K, typename V, typename Prober, typename Hash, typename KEqual>
 HashTable<K,V,Prober,Hash,KEqual>::~HashTable()
 {
-	for (size_t i = 0; i < table_.size(); i++)
+	for (size_t i = 0; i < CAPACITIES[mIndex_]; i++)
 	{
 		delete table_[i];
 	}
@@ -479,6 +479,7 @@ void HashTable<K,V,Prober,Hash,KEqual>::resize()
 				HASH_INDEX_T idx = probe(temp[i]->item.first);
 
 				table_[idx] = new HashItem(temp[i]->item);
+				delete temp[i];
 			}
 			else if (temp[i]->deleted == true) // should be deleted
 			{
