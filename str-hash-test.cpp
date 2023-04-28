@@ -15,6 +15,8 @@ int main(int argc, char* argv[])
     // use debug r values so we get repeated results
     MyStringHash h1(true);
 
+	
+
     // key to hash
     string k(argv[1]);
     size_t hk = h1(k);

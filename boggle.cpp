@@ -91,9 +91,38 @@ std::set<std::string> boggle(const std::set<std::string>& dict, const std::set<s
 	return result;
 }
 
-bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board, 
-								   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc)
+bool boggleHelper(const std::set<std::string>& dict, const std::set<std::string>& prefix, const std::vector<std::vector<char> >& board,
+                   std::string word, std::set<std::string>& result, unsigned int r, unsigned int c, int dr, int dc) 
 {
-//add your solution here!
 
+    word += board[r][c]; // add the current letter to the word
+
+    if (prefix.find(word) == prefix.end() && dict.find(word) == dict.end())  // if the current word is not a prefix-> stop recursion
+		{
+        return false;
+    }
+
+    if (word.length() == board.size())  // if the word has reached the maximum length-> stop recursion
+		{
+        return false;
+    }
+
+    // recursively search in the next position
+		
+    int next_r = r + dr;
+    int next_c = c + dc;
+    bool foundLongerWord = false;
+
+    if (next_r >= 0 && next_r < board.size() && next_c >= 0 && next_c < board.size()) 
+		{
+        foundLongerWord = boggleHelper(dict, prefix, board, word, result, next_r, next_c, dr, dc);
+    }
+
+    if (!foundLongerWord && dict.find(word) != dict.end())
+		{
+        result.insert(word);
+        return true;
+    }
+
+    return foundLongerWord;
 }
